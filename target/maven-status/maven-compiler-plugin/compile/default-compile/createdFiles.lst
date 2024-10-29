@@ -1,0 +1,17 @@
+com\utp\integradorspringboot\PacRecetasController.class
+com\utp\integradorspringboot\repositories\PersonaRepository.class
+com\utp\integradorspringboot\api\PersonaController.class
+com\utp\integradorspringboot\services\EmailService.class
+com\utp\integradorspringboot\PacNewCitasController.class
+com\utp\integradorspringboot\models\Persona.class
+com\utp\integradorspringboot\RegisterController.class
+com\utp\integradorspringboot\repositories\ProfesorRepository.class
+com\utp\integradorspringboot\HomeController.class
+com\utp\integradorspringboot\LoginController.class
+com\utp\integradorspringboot\models\Profesor.class
+com\utp\integradorspringboot\IntegradorspringbootApplication.class
+com\utp\integradorspringboot\PacCitasController.class
+com\utp\integradorspringboot\PacPagosController.class
+com\utp\integradorspringboot\api\ProfesorController.class
+com\utp\integradorspringboot\PacResultadosController.class
+com\utp\integradorspringboot\models\Email.class

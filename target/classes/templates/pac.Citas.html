@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="_layaoutPaciente">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Citas</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+        <link rel="stylesheet" href="/css/estilitosPaciente.css">
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <!-- Sección para la lista de citas -->
+            <div class="tab-content pt-4" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-citas" role="tabpanel" aria-labelledby="pills-citas-tab">
+                    <div class="container">
+                        <div>
+                            <div class="d-flex justify-content-between mb-3">
+                                <a class="btn btn-dark" id="nuevaCitaBtn" href="/cita/nuevacita">
+                                    <i class="fa fa-plus"></i> Nueva cita
+                                </a>
+                                <div class="d-flex align-items-center">
+                                    <label class="me-3" for="sort1">Estado</label>
+                                    <select id="sort1" class="form-select">
+                                        <option value="todos">Todos</option>
+                                        <option value="asistió">Asistió</option>
+                                        <option value="no asistió">No asistió</option>
+                                        <option value="reservado">Reservado</option>
+                                        <option value="cancelada">Cancelada</option>
+                                    </select>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <label class="ps-5" for="sort" style="width: 12em;">Ordenar según</label>
+                                    <select id="sort" class="form-select  w-50">
+                                        <option value="medico">Médico</option>
+                                        <option value="especialidad" >Especialidad</option>
+                                        <option value="fecha">Fecha</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="container mt-6">
+                                <div class="table-responsive" style="max-height: 400px;">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Médico</th>
+                                                <th>Especialidad</th>
+                                                <th>Fecha</th>
+                                                <th>Hora</th>
+                                                <th>Estado</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-center" id="tableBody">
+                                            <!-- Aquí se llenará el contenido de la tabla -->
+                                        </tbody>
+                                    </table>
+
+                                    <!-- Paginación -->
+                                    <div id="pagination-container" class="pagination-container">
+                                        <ul id="pagination" class="pagination justify-content-center"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/0.6.1/vue-resource.min.js" integrity="sha512-NuUIe6TWdEivPTcxnihx2e6r2xQFEFPrJfpdZWoBwZF6G51Rphcf5r/1ZU/ytj4lyHwLd/YGMix4a5LqAN15XA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/js/filtro.js"></script>
+
+    <script layout:fragment="script">
+        //Tabla
+        const data = [
+            {medico: 'Médico 0', especialidad: 'Cardiologia', fecha: '23 Mayo, 2024', hora: '09:00', estado: 'Asistió'},
+            {medico: 'Médico 1', especialidad: 'Dermatologia', fecha: '23 Mayo, 2024', hora: '09:00', estado: 'Reservado'},
+            {medico: 'Médico 2', especialidad: 'Medicina general', fecha: '23 Mayo, 2024', hora: '09:00', estado: 'Cancelada'},
+            {medico: 'Médico 3', especialidad: 'Medicina general', fecha: '23 Mayo, 2024', hora: '09:00', estado: 'No asistió'},
+            {medico: 'Médico 4', especialidad: 'Cardiologia', fecha: '23 Mayo, 2024', hora: '09:00', estado: 'Asistió'},
+            {medico: 'Médico 5', especialidad: 'Cardiologia', fecha: '23 Mayo, 2024', hora: '09:00', estado: 'Asistió'},
+            {medico: 'Médico 6', especialidad: 'Cardiologia', fecha: '23 Mayo, 2024', hora: '09:00', estado: 'Asistió'},
+            {medico: 'Médico 7', especialidad: 'Cardiologia', fecha: '23 Mayo, 2024', hora: '09:00', estado: 'Asistió'},
+            {medico: 'Médico 8', especialidad: 'Cardiologia', fecha: '23 Mayo, 2024', hora: '09:00', estado: 'Asistió'},
+            {medico: 'Médico 9', especialidad: 'Cardiologia', fecha: '23 Mayo, 2024', hora: '09:00', estado: 'Asistió'},
+            {medico: 'Médico 10', especialidad: 'Cardiologia', fecha: '23 Mayo, 2024', hora: '09:00', estado: 'Reservado'}
+        ];
+
+        const rowsPerPage = 5;
+        let currentPage = 1;
+
+        function renderTable(page) {
+            const start = (page - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const paginatedData = data.slice(start, end);
+
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+
+            paginatedData.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+            <td class="text-center">${item.medico}</td>
+            <td class="text-center">${item.especialidad}</td>
+            <td class="text-center">${item.fecha}</td>
+            <td class="text-center">${item.hora}</td>
+            <td class="text-center">${item.estado}</td>
+            <td class="text-center">
+              ${item.estado === 'Reservado' ? `
+                <button class="btn btn-sm btn-outline-danger"><i class="fa fa-times"></i></button>
+                <button class="btn btn-sm btn-outline-primary"><i class="fa fa-pencil-alt"></i></button>
+              ` : ''}
+            </td>
+          `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Cargar la tabla en la primera página al inicializar la página
+        window.onload = function () {
+            renderTable(currentPage);
+        };
+
+        //Paginacion
+        function renderPagination() {
+            const totalPages = Math.ceil(data.length / rowsPerPage);
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = ''; // Clear previous content
+
+            const showEllipsis = totalPages > 5;
+
+            // Previous button
+            const prevLi = document.createElement('li');
+            prevLi.className = 'page-item' + (currentPage === 1 ? ' disabled' : '');
+            prevLi.innerHTML = `<a class="page-link" href="#" aria-label="Previous">
+                                      <span aria-hidden="true">&laquo;</span>
+                                  </a>`;
+            prevLi.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderTable(currentPage);
+                    renderPagination();
+                }
+            });
+            pagination.appendChild(prevLi);
+
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    const li = document.createElement('li');
+                    li.className = 'page-item' + (i === currentPage ? ' active' : '');
+                    li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+                    li.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        currentPage = i;
+                        renderTable(currentPage);
+                        renderPagination();
+                    });
+                    pagination.appendChild(li);
+                } else if (showEllipsis && (i === 2 || i === totalPages - 1) && !(pagination.lastChild && pagination.lastChild.innerText === '...')) {
+                    const li = document.createElement('li');
+                    li.className = 'page-item disabled';
+                    li.innerHTML = '<span class="page-link">...</span>';
+                    pagination.appendChild(li);
+                }
+            }
+
+            // Next button
+            const nextLi = document.createElement('li');
+            nextLi.className = 'page-item' + (currentPage === totalPages ? ' disabled' : '');
+            nextLi.innerHTML = `<a class="page-link" href="#" aria-label="Next">
+                                      <span aria-hidden="true">&raquo;</span>
+                                  </a>`;
+            nextLi.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderTable(currentPage);
+                    renderPagination();
+                }
+            });
+            pagination.appendChild(nextLi);
+        }
+
+        // Initialize the table and pagination
+
+        renderPagination();
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const especialidad = document.getElementById('especialidad');
+            const medico = document.getElementById('medico');
+            const hora = document.getElementById('hora');
+            const fecha = document.getElementById('fecha');
+            const precio = document.getElementById('precio');
+
+            // Datos de médicos y precios por especialidad
+            const medicosDisponibles = {
+                cardiologia: {
+                    medicos: ['Dr. Pérez', 'Dr. García'],
+                    precio: '200.00'
+                },
+                pediatria: {
+                    medicos: ['Dra. Sánchez', 'Dr. Flores'],
+                    precio: '150.00'
+                },
+                dermatologia: {
+                    medicos: ['Dr. Ramírez', 'Dra. Torres'],
+                    precio: '180.00'
+                }
+            };
+
+            // Horarios disponibles por médico
+            const horariosDisponibles = {
+                'Dr. Pérez': ['09:00', '10:00', '11:00'],
+                'Dr. García': ['12:00', '13:00', '14:00'],
+                'Dra. Sánchez': ['08:00', '09:30', '10:30'],
+                'Dr. Flores': ['11:00', '12:30', '13:30'],
+                'Dr. Ramírez': ['09:00', '10:30', '11:30'],
+                'Dra. Torres': ['12:00', '13:30', '14:30']
+            };
+
+            // Actualizar los médicos según la especialidad seleccionada
+            especialidad.addEventListener('change', function () {
+                const especialidadSeleccionada = especialidad.value;
+                medico.innerHTML = '<option value="">Seleccione...</option>';
+                precio.value = '';
+
+                if (especialidadSeleccionada && medicosDisponibles[especialidadSeleccionada]) {
+                    medico.disabled = false;
+                    precio.value = medicosDisponibles[especialidadSeleccionada].precio;  // Asignar el precio
+                    medicosDisponibles[especialidadSeleccionada].medicos.forEach(function (medicoNombre) {
+                        const option = document.createElement('option');
+                        option.value = medicoNombre;
+                        option.textContent = medicoNombre;
+                        medico.appendChild(option);
+                    });
+                } else {
+                    medico.disabled = true;
+                }
+            });
+
+            // Actualizar los horarios según el médico seleccionado
+            medico.addEventListener('change', function () {
+                const medicoSeleccionado = medico.value;
+                hora.innerHTML = '<option value="">Seleccione...</option>';
+
+                if (medicoSeleccionado && horariosDisponibles[medicoSeleccionado]) {
+                    hora.disabled = false;
+                    horariosDisponibles[medicoSeleccionado].forEach(function (horaDisponible) {
+                        const option = document.createElement('option');
+                        option.value = horaDisponible;
+                        option.textContent = horaDisponible;
+                        hora.appendChild(option);
+                    });
+                } else {
+                    hora.disabled = true;
+                }
+            });
+        });
+
+        document.getElementById('tipoPago').addEventListener('change', function () {
+            const tipoPago = this.value;
+            const camposDinamicos = document.getElementById('camposDinamicos');
+
+            // Limpiar los campos dinámicos antes de agregar los nuevos
+            camposDinamicos.innerHTML = '';
+
+            if (tipoPago === 'tarjeta') {
+                camposDinamicos.innerHTML = `
+                    <div class="mb-3">
+                      <label for="nombreTarjeta" class="form-label">Nombre</label>
+                      <input type="text" class="form-control" id="nombreTarjeta" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="numeroTarjeta" class="form-label">Número de Tarjeta</label>
+                      <input type="text" class="form-control" id="numeroTarjeta" required>
+                    </div>
+                `;
+            } else if (tipoPago === 'efectivo') {
+                camposDinamicos.innerHTML = `
+                    <div class="mb-3">
+                      <label for="nombreEfectivo" class="form-label">Nombre</label>
+                      <input type="text" class="form-control" id="nombreEfectivo" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="montoEfectivo" class="form-label">Monto</label>
+                      <input type="text" class="form-control" id="montoEfectivo" required>
+                    </div>
+                `;
+            } else if (tipoPago === 'transferencia') {
+                camposDinamicos.innerHTML = `
+                    <div class="mb-3">
+                      <label for="nombreTransferencia" class="form-label">Nombre</label>
+                      <input type="text" class="form-control" id="nombreTransferencia" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="numeroTransferencia" class="form-label">Número de Transferencia</label>
+                      <input type="text" class="form-control" id="numeroTransferencia" required>
+                    </div>
+                `;
+            }
+        });
+
+        const recordsPerPage = 5; // Número de registros por página
+
+        // Función para cargar los datos en la tabla
+        function loadTable(data) {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = ''; // Limpiar el contenido existente
+
+            // Calcular el inicio y el fin de los registros a mostrar en la página actual
+            const start = (currentPage - 1) * recordsPerPage;
+            const end = start + recordsPerPage;
+
+            // Obtener los registros para la página actual
+            const currentRecords = data.slice(start, end);
+
+            // Comprobar si hay registros para mostrar
+            if (currentRecords.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="5" class="text-center">No hay datos disponibles</td></tr>`;
+                return;
+            }
+
+            currentRecords.forEach(appointment => {
+                const row = document.createElement('tr'); // Crear una nueva fila
+                row.innerHTML = `
+                    <td>${appointment.medico}</td>
+                    <td>${appointment.especialidad}</td>
+                    <td>${appointment.fecha}</td>
+                    <td>${appointment.hora}</td>
+                    <td>${appointment.estado}</td>
+                `;
+                tableBody.appendChild(row); // Agregar la fila a la tabla
+            });
+
+            // Actualizar la paginación
+            updatePagination(data.length);
+        }
+
+
+
+    </script>
+
+</body>
+
+</html>

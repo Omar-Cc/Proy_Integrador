@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Formulario de Registro</title>
+        <link rel="stylesheet" href="/css/register.css">
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <a class="navbar-brand p-2" href="index.html">ClinicaMedica</a>
+            </div>
+        </nav>
+        <div class="texto">
+            <div class="cab"><h1>REGISTRATE</h1></div>
+            <div class="container">
+                <form>
+                    <!-- Primera Parte -->
+                    <div id="primera-parte" class="form-section active centered">
+                        <div class="form-group">
+                            <label for="dni">DNI</label>
+                            <input type="text" id="dni" placeholder="Ingrese su DNI">
+                        </div>
+                        <div class="form-group">
+                            <label for="fecha-nacimiento">Fecha de Nacimiento</label>
+                            <input type="date" id="fecha-nacimiento" placeholder="Ingrese su fecha de nacimiento">
+                        </div>
+                        <div class="form-group">
+                            <label for="codigo-verificador">Código Verificador</label>
+                            <input type="text" id="codigo-verificador" placeholder="Ingrese el código verificador">
+                        </div>
+                        <div class="boton">
+                            <button type="button" onclick="mostrarSegundaParte()">Siguiente</button>
+                        </div>
+                    </div>
+
+                    <!-- Segunda Parte -->
+                    <div id="segunda-parte" class="form-section">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" id="nombre" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="apellidos">Apellidos</label>
+                                <input type="text" id="apellidos" readonly>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="correo">Correo</label>
+                                <input type="email" id="correo" placeholder="Ingrese su correo">
+                            </div>
+                            <div class="form-group">
+                                <label for="telefono">Teléfono</label>
+                                <input type="tel" id="telefono" placeholder="Ingrese su teléfono">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contraseña">Contraseña</label>
+                                <input type="password" id="contraseña" placeholder="Ingrese su contraseña">
+                            </div>
+                            <div class="form-group">
+                                <label for="repetir-contraseña">Repetir contraseña</label>
+                                <input type="password" id="repetir-contraseña" placeholder="Repita su contraseña">
+                            </div>
+                        </div>
+                        <div class="form-group error-message">
+                            <span>Error</span>
+                        </div>
+                        <div class="boton">
+                            <button><a href="/login">Registrarse</a></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            function mostrarSegundaParte() {
+                document.getElementById('primera-parte').classList.remove('active');
+                document.getElementById('primera-parte').classList.add('inactive');
+                document.getElementById('segunda-parte').classList.add('active');
+            }
+        </script>
+    </body>
+
+</html>
