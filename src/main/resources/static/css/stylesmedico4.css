@@ -1,0 +1,12 @@
+.custom-form-container {
+    background-color: #f0f4ff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.btn-custom {
+    background-color: #333333;
+    color: white;
+    width: 100%;
+}
